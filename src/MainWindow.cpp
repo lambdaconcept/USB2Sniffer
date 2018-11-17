@@ -1,4 +1,5 @@
 #include "MainWindow.hpp"
+#include "USBDataModel.hpp"
 #include <string>
 #include <QFrame>
 #include <QDockWidget>
@@ -35,7 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     QDockWidget *dock1 = new QDockWidget(this);
 	QListView *listView1 = new QListView(this);
-	listView1->setModel(new UsbDataModel);
+
+	listView1->setModel(new USBDataModel(nullptr));
 	dock1->setWidget(listView1);
 	addDockWidget(Qt::BottomDockWidgetArea, dock1);
 
