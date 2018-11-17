@@ -23,8 +23,13 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-private:
-    void setupModelData(const QStringList &lines, USBDataItem *parent);
 
-	USBDataItem *rootItem;
+private:
+	QStringList m_columns = { "Transfer",
+							  "Time",
+							  "Device",
+							  "Length",
+							  "Setup",
+							  "Data" };
+	QVector<USBDataItem *> m_items;
 };

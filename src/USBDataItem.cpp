@@ -2,9 +2,9 @@
 
 #include "USBDataItem.hpp"
 
-USBDataItem::USBDataItem(const QString &Transfer, const QString &Time, unsigned int Device, const QString &Length, const QString &Setup, const QString &Data, USBDataItem *parent)
+USBDataItem::USBDataItem(const QString &Transfer, const QString &Time, unsigned int Device, const QString &Length, const QString &Setup, const QString &Data, USBDataModel *model)
 {
-    m_parentItem = parent;
+	mp_model = model;
 	m_Transfer = Transfer;
     m_Time = Time;
 	m_Device = Device;
@@ -15,22 +15,6 @@ USBDataItem::USBDataItem(const QString &Transfer, const QString &Time, unsigned 
 
 USBDataItem::~USBDataItem()
 {
-    qDeleteAll(m_childItems);
-}
-
-void USBDataItem::appendChild(USBDataItem *item)
-{
-    m_childItems.append(item);
-}
-
-USBDataItem *USBDataItem::child(int row)
-{
-    return m_childItems.value(row);
-}
-
-int USBDataItem::childCount() const
-{
-    return m_childItems.count();
 }
 
 int USBDataItem::columnCount() const
@@ -61,15 +45,8 @@ QVariant USBDataItem::data(int column) const
 	return QVariant();
 }
 
-USBDataItem *USBDataItem::parentItem()
-{
-    return m_parentItem;
-}
 
 int USBDataItem::row() const
 {
-    if (m_parentItem)
-        return m_parentItem->m_childItems.indexOf(const_cast<USBDataItem *>(this));
-
     return 0;
 }
