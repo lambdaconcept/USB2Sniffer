@@ -16,10 +16,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	
 	mp_mainScrollArea->setWidget(mp_mainFrame);
 
+
+	addUsbDevice();
 	addUsbDevice();
 	//addUsbDevice();
-	//addUsbDevice();
-	this->setCentralWidget(mp_mainScrollArea);
+	this->setCentralWidget(mp_mainFrame);
 
 }
 
@@ -32,14 +33,13 @@ void MainWindow::addUsbDevice()
 {
 	UsbDeviceDataContainer *container = new UsbDeviceDataContainer;
 	QScrollArea *area = new QScrollArea(mp_mainFrame);
-	//area->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	area->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	container->mp_zoomer = new timeline::Zoomer();
-	container->mp_zoomer->show();
+	area->addScrollBarWidget(container->mp_zoomer, Qt::AlignLeft);
+
 	container->mp_ruler = new timeline::Ruler();
-	container->mp_ruler->show();
-	
-	//mp_mainFrame->layout()->addWidget(mp_zoomer);
+
 
 	area->setWidget(container->mp_ruler);
 
