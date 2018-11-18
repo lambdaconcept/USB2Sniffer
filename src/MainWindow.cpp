@@ -52,6 +52,7 @@ void MainWindow::addUsbDevice()
 	container->mp_dataView = new QTreeView(container->mp_dockWidget);
 
 	container->mp_dataView->setModel(new USBDataModel(nullptr));
+    container->mp_dataView->setRootIsDecorated(false);
 	container->mp_dockWidget->setWidget(container->mp_dataView);
 	addDockWidget(Qt::BottomDockWidgetArea, container->mp_dockWidget);
 	
