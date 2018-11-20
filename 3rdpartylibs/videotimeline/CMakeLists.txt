@@ -14,6 +14,9 @@ FIND_PACKAGE(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
 FILE(GLOB V1_HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 FILE(GLOB V1_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")  
 
+
+
+
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 
 ################################################################################

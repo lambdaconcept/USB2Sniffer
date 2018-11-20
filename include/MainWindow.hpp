@@ -3,7 +3,10 @@
 #include <QAbstractItemModel>
 #include <QScrollArea>
 #include <QTreeView>
+#include <QSplitter>
+
 #include "USBDataModel.hpp"
+#include "TimeLineWidget.h"
 
 #include "ruler.h"
 #include "zoomer.h"
@@ -13,9 +16,7 @@ class UsbDeviceDataContainer
 public:
 	USBDataModel *mp_model = nullptr;
 	QTreeView *mp_dataView = nullptr;
-	QDockWidget *mp_dockWidget = nullptr;
-	timeline::Ruler *mp_ruler = nullptr;
-	timeline::Zoomer *mp_zoomer = nullptr;
+    timeline::TimeLineWidget *mp_timeLineWidget = nullptr;
 };
 
 class MainWindow : public QMainWindow
@@ -29,11 +30,11 @@ public:
 
 
 private:
-    timeline::Ruler *mp_ruler = nullptr;
-	timeline::Zoomer *mp_zoomer = nullptr;
 	QVector<UsbDeviceDataContainer *> m_usbContainers;
 	QScrollArea *mp_mainScrollArea = nullptr;
-	QFrame *mp_mainFrame = nullptr;
+    QSplitter *mp_mainSplitter = nullptr;
+    QFrame *mp_timeLineFrame = nullptr;
+    QFrame *mp_listsFrame = nullptr;
 
 };
 

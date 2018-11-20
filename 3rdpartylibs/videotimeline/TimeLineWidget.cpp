@@ -1,15 +1,15 @@
-#include "mainwindow.h"
+#include "TimeLineWidget.h"
 #include <QVBoxLayout> 
 #include <QScrollBar>
 #include <QDebug>
 
 namespace timeline {
 
-	MainWindow::MainWindow(QWidget* parent /* = Q_NULLPTR */)
+    TimeLineWidget::TimeLineWidget(QWidget* parent /* = Q_NULLPTR */)
 		: QScrollArea(parent)
 	{
 		setWindowIcon(QIcon(":/images/logo")); 
-		resize(800, 150);
+        resize(800, 150);
 		setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);  
 		mZoomer = new Zoomer(this);
 		addScrollBarWidget(mZoomer, Qt::AlignLeft);

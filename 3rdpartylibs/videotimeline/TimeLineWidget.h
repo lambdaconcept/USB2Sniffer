@@ -7,11 +7,11 @@
 
 namespace timeline {
 
-	class MainWindow : public QScrollArea {
+	class TimeLineWidget : public QScrollArea {
 		Q_OBJECT
 	public:
-		MainWindow(QWidget* parent = Q_NULLPTR);
-		~MainWindow() = default;
+		TimeLineWidget(QWidget* parent = Q_NULLPTR);
+		~TimeLineWidget() = default;
 
 	private:
 		Ruler* mRuler;
