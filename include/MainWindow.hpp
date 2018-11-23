@@ -4,6 +4,11 @@
 #include <QScrollArea>
 #include <QTreeView>
 #include <QSplitter>
+#include <QMenu>
+#include <QMenuBar>
+#include <QFileDialog>
+#include <QProgressBar>
+#include <QStatusBar>
 
 #include "USBDataModel.hpp"
 #include "TimeLineWidget.h"
@@ -28,6 +33,8 @@ public:
     ~MainWindow();
 	void addUsbDevice();
 
+    void setupMenubar();
+
 
 private:
 	QVector<UsbDeviceDataContainer *> m_usbContainers;
@@ -36,5 +43,11 @@ private:
     QFrame *mp_timeLineFrame = nullptr;
     QFrame *mp_listsFrame = nullptr;
 
+    QMenuBar *mp_menubar = nullptr;
+    QMenu *mp_fileMenu = nullptr;
+    QAction *mp_importSampleData = nullptr;
+    QStatusBar *mp_statusBar = nullptr;
+    QProgressBar *mp_progressBar = nullptr;
+    USBDataModel *mp_experimentalModel = new USBDataModel;
 };
 

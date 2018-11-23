@@ -25,6 +25,7 @@ set(USB2SNIFFER_SRC_FILES
 
 
 set(USB2SNIFFER_INCLUDE_FILES
+	${INC_DIR}/decode.h
 	${INC_DIR}/MainWindow.hpp
 	${INC_DIR}/USBDataItem.hpp
 	${INC_DIR}/USBDataModel.hpp

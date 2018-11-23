@@ -5,7 +5,7 @@ class USBDataModel;
 class USBDataItem
 {
 public:
-    explicit USBDataItem(const QString &Transfer, const QString &Time, unsigned int Device, const QString &Length, const QString &Setup, const QString &Data, USBDataModel *model);
+    explicit USBDataItem(const QString &Timestamp, const QString &Pid, const QString &Addr, const QString &Endpoint, const QString &CRC, const QString &FrameNumber, quint64 DataLen, const QString &Data, USBDataModel *model);
     ~USBDataItem();
 
 
@@ -16,10 +16,13 @@ public:
 private:
 
 	USBDataModel *mp_model = nullptr;
-	QString m_Transfer;
-	QString m_Time;
-	unsigned int m_Device = 0;
-	QString m_Length;
-	QString m_Setup;
-	QString m_Data;
+    QString m_Timestamp;
+    QString m_Pid;
+    QString m_Addr;
+    QString m_Endpoint;
+    QString m_CRC;
+    QString m_FrameNumber;
+    quint64 m_DataLen = 0;
+    QString m_Data;
+
 };

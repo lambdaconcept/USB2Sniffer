@@ -1,16 +1,18 @@
 #include <QStringList>
-
+#include "USBDataModel.hpp"
 #include "USBDataItem.hpp"
 
-USBDataItem::USBDataItem(const QString &Transfer, const QString &Time, unsigned int Device, const QString &Length, const QString &Setup, const QString &Data, USBDataModel *model)
+USBDataItem::USBDataItem(const QString &Timestamp, const QString &Pid, const QString &Addr, const QString &Endpoint, const QString &CRC, const QString &FrameNumber, quint64 DataLen, const QString &Data,  USBDataModel *model)
 {
 	mp_model = model;
-	m_Transfer = Transfer;
-    m_Time = Time;
-	m_Device = Device;
-	m_Length = Length;
-	m_Setup = Setup;
-	m_Data = Data;
+    m_Timestamp = Timestamp;
+    m_Pid = Pid;
+    m_Addr = Addr;
+    m_Endpoint = Endpoint;
+    m_CRC = CRC;
+    m_FrameNumber = FrameNumber;
+    m_DataLen = DataLen;
+    m_Data = Data;
 }
 
 USBDataItem::~USBDataItem()
@@ -19,29 +21,35 @@ USBDataItem::~USBDataItem()
 
 int USBDataItem::columnCount() const
 {
-    return 6;
+    return USBDataModel::m_columns.count();
 }
 
 QVariant USBDataItem::data(int column) const
 {
 	if (column == 0) {
-		return m_Transfer;
+        return m_Timestamp;
 	}
 	else if (column == 1) {
-		return m_Time;
+        return m_Pid;
 	}
 	else if (column == 2) {
-		return m_Device;
+        return m_Addr;
 	}
 	else if (column == 3) {
-		return m_Length;
+        return m_Endpoint;
 	}
 	else if (column == 4) {
-		return m_Setup;
+        return m_CRC;
 	}
 	else if (column == 5) {
-		return m_Data;
+        return m_FrameNumber;
 	}
+    else if (column == 6) {
+        return m_DataLen;
+    }
+    else if (column == 7) {
+        return m_Data;
+    }
 	return QVariant();
 }
 

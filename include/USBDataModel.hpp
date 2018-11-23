@@ -1,11 +1,11 @@
 #pragma once
-#include <QAbstractItemModel>
+#include <QAbstractTableModel>
 #include <QModelIndex>
 #include <QVariant>
-
+#include <QtDebug>
 class USBDataItem;
 
-class USBDataModel : public QAbstractItemModel
+class USBDataModel : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -23,13 +23,15 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
+    static QStringList m_columns;
+
+
+    void setItems(const QVector<const USBDataItem *> &items) {
+        beginInsertRows(QModelIndex(), 0, items.count()-1);
+        m_items = items;
+        endInsertRows();
+    }
 
 private:
-	QStringList m_columns = { "Transfer",
-							  "Time",
-							  "Device",
-							  "Length",
-							  "Setup",
-							  "Data" };
-	QVector<USBDataItem *> m_items;
+    QVector<const USBDataItem *> m_items;
 };

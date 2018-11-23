@@ -4,10 +4,19 @@
 #include <QStringList>
 #include <QDebug>
 
-USBDataModel::USBDataModel(QObject *parent) : QAbstractItemModel(parent)
+
+
+QStringList USBDataModel::m_columns = { "TIMESTAMP",
+                              "PID",
+                              "ADDR",
+                              "ENDPOINT",
+                              "CRC",
+                              "FRAME_NUMBER",
+                              "DATA_LEN",
+                              "DATA"};
+
+USBDataModel::USBDataModel(QObject *parent) : QAbstractTableModel(parent)
 {
-    m_items.append(new USBDataItem("0", "0", 0, "0", "0", "0", nullptr));
-	m_items.append(new USBDataItem("1", "1", 1, "1", "1", "1", nullptr));
 }
 
 USBDataModel::~USBDataModel()
@@ -19,6 +28,7 @@ int USBDataModel::columnCount(const QModelIndex &parent) const
 	return m_columns.count();
 }
 
+
 QVariant USBDataModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
@@ -27,7 +37,7 @@ QVariant USBDataModel::data(const QModelIndex &index, int role) const
     if (role != Qt::DisplayRole)
         return QVariant();
 
-	USBDataItem *item = m_items.at(index.row());
+    const USBDataItem *item = m_items.at(index.row());
 
     return item->data(index.column());
 }
