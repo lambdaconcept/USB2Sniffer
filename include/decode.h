@@ -30,6 +30,25 @@
 
 const char *pid_str[] = {"RESERVED", "OUT", "ACK", "DATA0", "PING", "SOF", "NYET", "DATA2", "SPLIT", "IN", "NAK", "DATA1", "ERR/PRE", "SETUP", "STALL", "MDATA"};
 
+const QColor pid_colors[] = {
+	QColor(255, 0,   0),
+	QColor(255, 128, 0),
+	QColor(255, 191, 0),
+	QColor(191, 255, 0),
+	QColor(64,  255, 0),
+	QColor(0,   255, 64),
+	QColor(0,   255, 191),
+	QColor(0,   255, 255),
+	QColor(0,   191, 255),
+	QColor(0,   128, 255),
+	QColor(0,   0,   255),
+	QColor(128, 0,   255),
+	QColor(191, 0,   255),
+	QColor(255, 0,   255),
+	QColor(255, 0,   128),
+	QColor(255, 0,   0)
+};
+
 struct usb_packet_s {
   unsigned long long int timestamp;
   unsigned char pid;

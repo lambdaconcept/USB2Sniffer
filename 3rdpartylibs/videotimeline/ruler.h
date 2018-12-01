@@ -37,12 +37,16 @@ namespace timeline {
 			return mEndMarkerTime;
 		}
 
-	signals:
-		void changeSliderPosition(int level);
+		int getTimeStampPid(long long timestamp) const;
 
-	public slots:
-		void onZoomerIn(int level);
-		void onZoomerOut(int level); 
+        void appendTimeStampPid(long long timestamp, int pid);
+
+    signals:
+        void changeSliderPosition(int level);
+
+    public slots:
+        void onZoomerIn(int level);
+        void onZoomerOut(int level);
 		void onMoveIndicator(qreal frameTime);
 
 	protected:
@@ -87,7 +91,8 @@ namespace timeline {
 		QColor mBodyBgrd;
 		QColor mHeaderBgrd; 
 		quint32 mDuration;  // time unit/s
-		qreal mRectWidth; 
+		qreal mRectWidth;
+        QHash<long long int, int> m_timeStampPids;
 	};
 }
 

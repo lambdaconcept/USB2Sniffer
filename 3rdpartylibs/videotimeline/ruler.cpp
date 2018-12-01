@@ -3,7 +3,7 @@
 #include <QAction>
 #include <QContextMenuEvent>
 #include <QPainter> 
-
+#include <QDebug>
 #define HEADER_HEIGHT 40
 #define BODY_HEIGHT 80
 #define START_END_PADDING 60
@@ -33,17 +33,27 @@ namespace timeline {
 		mMakeCurrentPoint = new QAction(tr("Mark in Current Position"), this);  
 
 		resize(mRectWidth + START_END_PADDING, 120);
-	}
+    }
 
-	void Ruler::setupChildren() {
-		mIndicator = new Indicator(this);
-		mIndicator->installEventFilter(this);
-		mIndicatorTime = 0;
+    int Ruler::getTimeStampPid(long long timestamp) const {
+        QHash<long long int, int>::const_iterator it = m_timeStampPids.find(timestamp);
 
-		mBeginMarker = new QLabel(this);
-		mBeginMarker->setPixmap(QPixmap(":/images/cutleft"));
-		mBeginMarker->setCursor(Qt::SizeHorCursor);
-		mBeginMarker->setFixedSize(CUT_MARKER_WIDTH, CUT_MARKER_HEIGHT);
+        if(it == m_timeStampPids.end()) {
+            return -1;
+        }
+
+        return it.value();
+    }
+
+    void Ruler::setupChildren() {
+        mIndicator = new Indicator(this);
+        mIndicator->installEventFilter(this);
+        mIndicatorTime = 0;
+
+        mBeginMarker = new QLabel(this);
+        mBeginMarker->setPixmap(QPixmap(":/images/cutleft"));
+        mBeginMarker->setCursor(Qt::SizeHorCursor);
+        mBeginMarker->setFixedSize(CUT_MARKER_WIDTH, CUT_MARKER_HEIGHT);
 		mBeginMarker->move(0, HEADER_HEIGHT);
 		mBeginMarker->installEventFilter(this);
 		mBeginMarkerTime = 0;
@@ -148,13 +158,20 @@ namespace timeline {
 	void Ruler::updateRectBox() { 
 		mRectBox->setGeometry(mBeginMarker->x() + CUT_MARKER_WIDTH, mBeginMarker->y(), 
 			mEndMarker->x() - mBeginMarker->x() - CUT_MARKER_WIDTH, BODY_HEIGHT);
-	}
+    }
 
-	void Ruler::contextMenuEvent(QContextMenuEvent *event) {
-		mContextMenu->addAction(mClearPoints);
-		mContextMenu->addAction(mCutWithCurrentPos);
-		mContextMenu->addAction(mMakeCurrentPoint);
-		mContextMenu->exec(QCursor::pos());
+
+
+    void Ruler::appendTimeStampPid(long long timestamp, int pid)
+    {
+        m_timeStampPids.insert(timestamp, pid);
+    }
+
+    void Ruler::contextMenuEvent(QContextMenuEvent *event) {
+        mContextMenu->addAction(mClearPoints);
+        mContextMenu->addAction(mCutWithCurrentPos);
+        mContextMenu->addAction(mMakeCurrentPoint);
+        mContextMenu->exec(QCursor::pos());
 		event->accept();
 	}  
 
@@ -273,6 +290,9 @@ namespace timeline {
 	} 
 
 	void Ruler::drawScaleRuler(QPainter* painter, QRectF rulerRect) { 
+		qDebug() << "Visible:" << this->visibleRegion().boundingRect();
+		qDebug() << "Geometry" << this->geometry();
+
 		qreal rulerStartMark = rulerRect.left();
 		qreal rulerEndMark = rulerRect.right();
 
