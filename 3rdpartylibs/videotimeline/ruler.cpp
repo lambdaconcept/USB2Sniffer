@@ -20,8 +20,8 @@ namespace timeline {
 		mOrigin(10.0),
 		mBodyBgrd(37, 38, 39),
 		mHeaderBgrd(32, 32, 32),
-		mIntervalLength(130.0),
-		mSliderLevel(1),
+		mIntervalLength(1000.0),
+		mSliderLevel(8),
 		mDuration(duration),
 		mRectWidth(mIntervalLength * mDuration / secondsPerInterval()) {  
 		setAttribute(Qt::WA_OpaquePaintEvent);
@@ -237,7 +237,7 @@ namespace timeline {
 			return mIntervalLength / 2.0; 
 		}
 	}
-	int Ruler::secondsPerInterval() { 
+	int Ruler::secondsPerInterval() {
 		switch (mSliderLevel)
 		{
 		case 1:
@@ -246,13 +246,16 @@ namespace timeline {
 			return 8; 
 		case 3:
 			return 4; 
-		case 4: 
+		case 4:
+			return 2;
 		case 5:
 		case 6:
 		case 7:
-		case 8: 
+		case 8:
+			return 1;
+
 		default:
-			return 2; 
+			return 1; 
 		}
 	}
 	
@@ -266,9 +269,8 @@ namespace timeline {
 			intervalNums * secondsPerInterval() / 60,
 			intervalNums * secondsPerInterval() % 60);
 		
-		if (intervalNums % 2 == 0) {
-			return currentTime.toString("mm:ss");
-		}
+		return currentTime.toString("mm:ss");
+		
 
 		return "";
 	}
@@ -303,6 +305,8 @@ namespace timeline {
 			qreal x2 = current;
 			qreal y2 = rulerRect.bottom();
 
+			if (!this->visibleRegion().boundingRect().contains(x1, y1))
+				continue;
 			// draw 2 tickers within one circle.
 			QPen tickerPen(QColor(61, 61, 61), 1);
 			painter->setPen(tickerPen);

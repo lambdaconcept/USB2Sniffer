@@ -14,7 +14,7 @@ namespace timeline {
 	class Ruler : public QWidget {
 		Q_OBJECT  
 	public:
-        explicit Ruler(QWidget* parent = Q_NULLPTR, int duration = 1024);
+        explicit Ruler(QWidget* parent = Q_NULLPTR, int duration = 3600);
 		~Ruler() = default;  
 
 		inline void setHeaderColor(const QColor& color) {
