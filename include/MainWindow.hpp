@@ -21,7 +21,8 @@ class UsbDeviceDataContainer
 public:
 	USBDataModel *mp_model = nullptr;
 	QTreeView *mp_dataView = nullptr;
-    timeline::TimeLineWidget *mp_timeLineWidget = nullptr;
+ //   timeline::TimeLineWidget *mp_timeLineWidget = nullptr;
+    QLabel *mp_timeLineWidget = nullptr;
 };
 
 class MainWindow : public QMainWindow

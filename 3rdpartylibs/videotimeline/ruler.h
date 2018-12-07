@@ -15,31 +15,31 @@ namespace timeline {
 		Q_OBJECT  
 	public:
         explicit Ruler(QWidget* parent = Q_NULLPTR, int duration = 3600);
-		~Ruler() = default;  
+        ~Ruler() = default;
 
-		inline void setHeaderColor(const QColor& color) {
-			mHeaderBgrd = color;
-		}
+        inline void setHeaderColor(const QColor& color) {
+            mHeaderBgrd = color;
+        }
 
-		inline void setDuration(quint32 duration) {
-			resetChildren(duration);
-		}
+        inline void setDuration(quint32 duration) {
+            resetChildren(duration);
+        }
 
-		inline void setBodyColor(const QColor& color) {
-			mBodyBgrd = color;
-		}
+        inline void setBodyColor(const QColor& color) {
+            mBodyBgrd = color;
+        }
 
-		inline int beginTime() const {
-			return mBeginMarkerTime;
-		}
+        inline int beginTime() const {
+            return mBeginMarkerTime;
+        }
 
-		inline int endTime() const {
-			return mEndMarkerTime;
-		}
+        inline int endTime() const {
+            return mEndMarkerTime;
+        }
 
-		int getTimeStampPid(long long timestamp) const;
+        int getTimeStampPid(double timestamp) const;
 
-        void appendTimeStampPid(long long timestamp, int pid);
+        void appendTimeStampPid(double timestamp, int pid);
 
     signals:
         void changeSliderPosition(int level);
@@ -92,7 +92,7 @@ namespace timeline {
 		QColor mHeaderBgrd; 
 		quint32 mDuration;  // time unit/s
 		qreal mRectWidth;
-        QHash<long long int, int> m_timeStampPids;
+        QHash<double, int> m_timeStampPids;
 	};
 }
 

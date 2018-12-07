@@ -2,7 +2,7 @@
 #include "USBDataModel.hpp"
 #include "USBDataItem.hpp"
 
-USBDataItem::USBDataItem(const QString &Timestamp, const QString &Pid, const QString &Addr, const QString &Endpoint, const QString &CRC, const QString &FrameNumber, quint64 DataLen, const QString &Data,  USBDataModel *model)
+USBDataItem::USBDataItem(const QString &Timestamp, unsigned char char_pid, const QString &Pid, const QString &Addr, const QString &Endpoint, const QString &CRC, const QString &FrameNumber, quint64 DataLen, const QString &Data,  USBDataModel *model)
 {
 	mp_model = model;
     m_Timestamp = Timestamp;
@@ -13,7 +13,10 @@ USBDataItem::USBDataItem(const QString &Timestamp, const QString &Pid, const QSt
     m_FrameNumber = FrameNumber;
     m_DataLen = DataLen;
     m_Data = Data;
+    m_charPid = char_pid;
 }
+
+
 
 USBDataItem::~USBDataItem()
 {

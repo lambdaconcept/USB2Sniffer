@@ -5,14 +5,16 @@ class USBDataModel;
 class USBDataItem
 {
 public:
-    explicit USBDataItem(const QString &Timestamp, const QString &Pid, const QString &Addr, const QString &Endpoint, const QString &CRC, const QString &FrameNumber, quint64 DataLen, const QString &Data, USBDataModel *model);
+    explicit USBDataItem(const QString &Timestamp, unsigned char char_pid, const QString &Pid, const QString &Addr, const QString &Endpoint, const QString &CRC, const QString &FrameNumber, quint64 DataLen, const QString &Data, USBDataModel *model);
     ~USBDataItem();
 
 
     int columnCount() const;
     QVariant data(int column) const;
     int row() const;
-
+    unsigned char pid() const {
+        return m_charPid;
+    }
 private:
 
 	USBDataModel *mp_model = nullptr;
@@ -24,5 +26,6 @@ private:
     QString m_FrameNumber;
     quint64 m_DataLen = 0;
     QString m_Data;
+    unsigned char m_charPid;
 
 };

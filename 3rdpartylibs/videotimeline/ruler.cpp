@@ -35,8 +35,8 @@ namespace timeline {
 		resize(mRectWidth + START_END_PADDING, 120);
     }
 
-    int Ruler::getTimeStampPid(long long timestamp) const {
-        QHash<long long int, int>::const_iterator it = m_timeStampPids.find(timestamp);
+    int Ruler::getTimeStampPid(double timestamp) const {
+        QHash<double, int>::const_iterator it = m_timeStampPids.find(timestamp);
 
         if(it == m_timeStampPids.end()) {
             return -1;
@@ -162,7 +162,7 @@ namespace timeline {
 
 
 
-    void Ruler::appendTimeStampPid(long long timestamp, int pid)
+    void Ruler::appendTimeStampPid(double timestamp, int pid)
     {
         m_timeStampPids.insert(timestamp, pid);
     }

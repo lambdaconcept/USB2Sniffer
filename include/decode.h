@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <QColor>
 #define PID_RESERVED 0x0
 #define PID_OUT	     0x1
 #define PID_IN	     0x9
@@ -30,24 +30,7 @@
 
 const char *pid_str[] = {"RESERVED", "OUT", "ACK", "DATA0", "PING", "SOF", "NYET", "DATA2", "SPLIT", "IN", "NAK", "DATA1", "ERR/PRE", "SETUP", "STALL", "MDATA"};
 
-const QColor pid_colors[] = {
-	QColor(255, 0,   0),
-	QColor(255, 128, 0),
-	QColor(255, 191, 0),
-	QColor(191, 255, 0),
-	QColor(64,  255, 0),
-	QColor(0,   255, 64),
-	QColor(0,   255, 191),
-	QColor(0,   255, 255),
-	QColor(0,   191, 255),
-	QColor(0,   128, 255),
-	QColor(0,   0,   255),
-	QColor(128, 0,   255),
-	QColor(191, 0,   255),
-	QColor(255, 0,   255),
-	QColor(255, 0,   128),
-	QColor(255, 0,   0)
-};
+
 
 struct usb_packet_s {
   unsigned long long int timestamp;
@@ -72,7 +55,16 @@ void print_pkt(struct usb_packet_s *pkt)
   }
 }
 
+int takeLastDigit(long long int number)
+{
+    long long int first = number;
+    printf("%llu\n",first);
+    while(first >= 10){
+        first = first / 10;
+    }
 
+    return static_cast<int>(first);
+}
 
 struct usb_packet_s decode_usb(char *buf, int dlen)
 {

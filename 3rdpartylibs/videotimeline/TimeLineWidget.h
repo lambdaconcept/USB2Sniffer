@@ -13,6 +13,10 @@ namespace timeline {
 		TimeLineWidget(QWidget* parent = Q_NULLPTR);
 		~TimeLineWidget() = default;
 
+        void appendTimeStampPid(double timestamp, int pid) {
+            mRuler->appendTimeStampPid(timestamp, pid);
+        }
+
 	private:
 		Ruler* mRuler;
 		Zoomer* mZoomer;
