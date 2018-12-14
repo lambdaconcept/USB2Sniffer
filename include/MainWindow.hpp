@@ -9,12 +9,36 @@
 #include <QFileDialog>
 #include <QProgressBar>
 #include <QStatusBar>
-
+#include <QMouseEvent>
 #include "USBDataModel.hpp"
 #include "TimeLineWidget.h"
 
 #include "ruler.h"
 #include "zoomer.h"
+
+
+class TimeLineMouseEventFilter : public QObject {
+    Q_OBJECT
+    public:
+        TimeLineMouseEventFilter(QObject *parent = nullptr) : QObject(parent) {
+
+        }
+
+    protected:
+        bool eventFilter(QObject *obj, QEvent *ev) {
+            if (ev->type() == QEvent::MouseButtonPress)
+             {
+               QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(ev);
+               emit indexClicked(mouseEvent->pos().x()-1);
+             }
+            return QObject::eventFilter(obj, ev);
+        }
+
+    signals:
+        void indexClicked(int index);
+
+};
+
 
 class UsbDeviceDataContainer
 {
@@ -23,6 +47,8 @@ public:
 	QTreeView *mp_dataView = nullptr;
  //   timeline::TimeLineWidget *mp_timeLineWidget = nullptr;
     QLabel *mp_timeLineWidget = nullptr;
+    TimeLineMouseEventFilter m_timeLineEf;
+
 };
 
 class MainWindow : public QMainWindow

@@ -15,6 +15,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QPointF>
+#include <QItemSelectionModel>
 
 
 const QColor pid_colors[] = {
@@ -74,16 +75,25 @@ void MainWindow::addUsbDevice()
     //container->mp_timeLineWidget = new timeline::TimeLineWidget(mp_timeLineFrame);
 
     container->mp_timeLineWidget = new QLabel(mp_timeLineFrame);
+
+
+    container->mp_timeLineWidget->installEventFilter(&container->m_timeLineEf);
     container->mp_timeLineWidget->show();
     mp_timeLineFrame->layout()->addWidget(container->mp_timeLineWidget);
 
 
 
     container->mp_dataView = new QTreeView(mp_listsFrame);
+    container->mp_dataView->setSelectionBehavior (QAbstractItemView::SelectRows);
     mp_listsFrame->layout()->addWidget(container->mp_dataView);
     container->mp_dataView->setModel(mp_experimentalModel);
     container->mp_dataView->setRootIsDecorated(false);
-	
+    connect(&container->m_timeLineEf, &TimeLineMouseEventFilter::indexClicked, [&](int index) {
+        m_usbContainers.at(0)->mp_dataView->selectionModel()->clearSelection();
+        m_usbContainers.at(0)->mp_dataView->selectionModel()->select( mp_experimentalModel->index(index, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        m_usbContainers.at(0)->mp_dataView->setCurrentIndex(mp_experimentalModel->index(index, 0));
+        m_usbContainers.at(0)->mp_dataView->scrollTo(mp_experimentalModel->index(index, 0));
+    });
 	m_usbContainers.append(container);
 }
 
@@ -167,7 +177,9 @@ void MainWindow::setupMenubar() {
                     p.setPen(Qt::black);
                     p.setRenderHint(QPainter::HighQualityAntialiasing,true);
                     qDebug() << "Render Text " << packetsPerSec[index];
-                    p.drawText( packetsPerSec[index].second + 2, 10, QString::number(packetsPerSec[index].first) + QString(" sec"));
+                    p.resetMatrix();
+                    p.translate(QPoint( packetsPerSec[index].second + 2, 10));
+                    p.drawText(0, 0, QString::number(packetsPerSec[index].first) + QString(" sec"));
 
                 }
 
