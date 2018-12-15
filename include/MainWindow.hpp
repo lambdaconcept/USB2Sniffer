@@ -10,11 +10,31 @@
 #include <QProgressBar>
 #include <QStatusBar>
 #include <QMouseEvent>
+#include <QPainter>
 #include "USBDataModel.hpp"
 #include "TimeLineWidget.h"
 
 #include "ruler.h"
 #include "zoomer.h"
+
+class TimeLineLabel : public QLabel {
+	public:
+		TimeLineLabel(QWidget *parent = nullptr) : QLabel(parent) {
+
+		}
+		QVector<QPair<int, long long int>> m_packetsPerSec;
+	protected:
+		void paintEvent(QPaintEvent *pev) {
+			QLabel::paintEvent(pev);
+			QPainter painter(this);
+			std::for_each(m_packetsPerSec.begin(), m_packetsPerSec.end(), [&](const QPair<int, long long int> &p) {
+				if (pev->rect().contains(QPoint(p.second, 1))) {
+					painter.drawText(p.second + 2, 10, QString::number(p.first) + QString(" sec"));
+				}
+			});
+		}
+
+};
 
 
 class TimeLineMouseEventFilter : public QObject {
@@ -46,7 +66,7 @@ public:
 	USBDataModel *mp_model = nullptr;
 	QTreeView *mp_dataView = nullptr;
  //   timeline::TimeLineWidget *mp_timeLineWidget = nullptr;
-    QLabel *mp_timeLineWidget = nullptr;
+	TimeLineLabel *mp_timeLineWidget = nullptr;
     TimeLineMouseEventFilter m_timeLineEf;
 
 };

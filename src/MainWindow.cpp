@@ -70,30 +70,26 @@ MainWindow::~MainWindow()
 void MainWindow::addUsbDevice()
 {
 	UsbDeviceDataContainer *container = new UsbDeviceDataContainer;
-
-
     //container->mp_timeLineWidget = new timeline::TimeLineWidget(mp_timeLineFrame);
 
-    container->mp_timeLineWidget = new QLabel(mp_timeLineFrame);
-
+    container->mp_timeLineWidget = new TimeLineLabel(mp_timeLineFrame);
 
     container->mp_timeLineWidget->installEventFilter(&container->m_timeLineEf);
     container->mp_timeLineWidget->show();
     mp_timeLineFrame->layout()->addWidget(container->mp_timeLineWidget);
-
-
 
     container->mp_dataView = new QTreeView(mp_listsFrame);
     container->mp_dataView->setSelectionBehavior (QAbstractItemView::SelectRows);
     mp_listsFrame->layout()->addWidget(container->mp_dataView);
     container->mp_dataView->setModel(mp_experimentalModel);
     container->mp_dataView->setRootIsDecorated(false);
-    connect(&container->m_timeLineEf, &TimeLineMouseEventFilter::indexClicked, [&](int index) {
+   
+	connect(&container->m_timeLineEf, &TimeLineMouseEventFilter::indexClicked, [&](int index) {
         m_usbContainers.at(0)->mp_dataView->selectionModel()->clearSelection();
-        m_usbContainers.at(0)->mp_dataView->selectionModel()->select( mp_experimentalModel->index(index, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
-        m_usbContainers.at(0)->mp_dataView->setCurrentIndex(mp_experimentalModel->index(index, 0));
+        m_usbContainers.at(0)->mp_dataView->selectionModel()->select(mp_experimentalModel->index(index, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
         m_usbContainers.at(0)->mp_dataView->scrollTo(mp_experimentalModel->index(index, 0));
     });
+
 	m_usbContainers.append(container);
 }
 
@@ -145,8 +141,6 @@ void MainWindow::setupMenubar() {
             free(buf);
             progress++;
             //m_usbContainers[0]->mp_timeLineWidget->appendTimeStampPid(pkt.timestamp/100000000.0f, pkt.pid & 0xF);
-            if(pkt.timestamp % 1000 == 0)
-                printf("%1.9f\n", pkt.timestamp/100000000.0f);
             mp_progressBar->setValue(1000*progress/(double)filesize + 5);
 
             int lastDigit = floor(pkt.timestamp/100000000.0f);
@@ -154,8 +148,6 @@ void MainWindow::setupMenubar() {
                 currentLastDigit = lastDigit;
                 packetsPerSec.append(QPair<int, long long int>(lastDigit, value));
             }
-
-
         }
 
 
@@ -169,33 +161,18 @@ void MainWindow::setupMenubar() {
 
 
         if(packetsPerSec.count()) {
-            QPainter p(&img);
-            p.drawText(packetsPerSec[0].second + 2, 10, QString::number(packetsPerSec[0].first) + QString(" sec"));
-
             for(int index = 1; index < packetsPerSec.count(); index++) {
-                if(packetsPerSec[index].second - packetsPerSec[index - 1].second > 1000) {
-                    p.setPen(Qt::black);
-                    p.setRenderHint(QPainter::HighQualityAntialiasing,true);
-                    qDebug() << "Render Text " << packetsPerSec[index];
-                    p.resetMatrix();
-                    p.translate(QPoint( packetsPerSec[index].second + 2, 10));
-                    p.drawText(0, 0, QString::number(packetsPerSec[index].first) + QString(" sec"));
-
-                }
-
                 for(int h = 0; h < 20; h++) {
                     img.setPixelColor(packetsPerSec[index].second, h, Qt::black);
                 }
             }
         }
+
         QPixmap pix;
         pix.convertFromImage(img);
+		m_usbContainers[0]->mp_timeLineWidget->m_packetsPerSec = packetsPerSec;
         m_usbContainers[0]->mp_timeLineWidget->setPixmap(pix);
 
-
-
-        qDebug() << "PacketsPerSec:" <<  packetsPerSec;
-        printf("counts of 1 sec = %d\n",count);
 
         mp_experimentalModel->setItems(items);
 
